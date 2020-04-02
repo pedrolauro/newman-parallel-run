@@ -1,0 +1,103 @@
+{
+	"info": {
+		"_postman_id": "7464f400-bd28-48b0-84ff-f492bea8938c",
+		"name": "Carga documentos",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Bundle",
+			"item": [
+				{
+					"name": "envia documento",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "370293bf-88d1-4e94-b92b-c78cc0e3907b",
+								"exec": [
+									"pm.test(\"Status code is 201\", function () { pm.response.to.have.status(201); });",
+									"",
+									"pm.test(\"Location is present\", function () {",
+									"    pm.response.to.have.header(\"Location\");",
+									"    ",
+									"    var location = pm.response.headers.get(\"Location\");",
+									"    var pieces = location.split('/');",
+									"    pm.environment.set(\"doc_id\", pieces[pieces.length-1]);",
+									"});",
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "1d92f996-c05b-4667-8848-ab1848a4811d",
+								"exec": [
+									"const moment = require('moment');",
+									"const start = new Date(2000, 0, 1);",
+									"const end = new Date();",
+									"const date = new Date(start.getTime() + Math.random() * (end.getTime() - start.getTime()));",
+									"",
+									"pm.environment.set(\"random_date\", moment(date).format());",
+									"",
+									"pm.variables.set('localDoc',JSON.stringify(pm.variables.get(\"document\")));",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							},
+							{
+								"description": "No modo debug identifica a origem.",
+								"key": "X-Authorization-Origin",
+								"type": "text",
+								"value": "CNES"
+							},
+							{
+								"description": "Token do servidor gerado pelo \"ehr-mutual-ssl-auth\". Em modo debug espera um CNPJ ou CPF.",
+								"key": "X-Authorization-Server",
+								"type": "text",
+								"value": "10302910000182"
+							},
+							{
+								"description": "Em modo debug enviar um CNS.",
+								"key": "Authorization",
+								"type": "text",
+								"value": "709805016469793"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{{localDoc}}"
+						},
+						"url": {
+							"raw": "{{host}}/api/fhir/r4/Bundle",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"fhir",
+								"r4",
+								"Bundle"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		}
+	],
+	"protocolProfileBehavior": {}
+}
