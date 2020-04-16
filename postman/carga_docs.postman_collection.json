@@ -67,7 +67,7 @@
 								"description": "Token do servidor gerado pelo \"ehr-mutual-ssl-auth\". Em modo debug espera um CNPJ ou CPF.",
 								"key": "X-Authorization-Server",
 								"type": "text",
-								"value": "10302910000182"
+								"value": "00394544000185"
 							},
 							{
 								"description": "Em modo debug enviar um CNS.",

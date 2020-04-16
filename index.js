@@ -2,50 +2,51 @@ const path = require('path')
 const async = require('async')
 const newman = require('newman')
 
-const PARALLEL_RUN_COUNT = 5
+const PARALLEL_RUN_COUNT = 1
 
 const parametersForTestRun1 = {
     collection: path.join(__dirname, 'postman/carga_docs.postman_collection.json'), // your collection
     environment: path.join(__dirname, 'postman/local.postman_environment.json'), //your env
     // environment: path.join(__dirname, 'postman/homologacao.postman_environment.json'), //your env
-    iterationData: path.join(__dirname, 'postman/documents.1.json')
-    ,iterationCount: 1
-    // ,reporters: 'cli'
+    // iterationData: path.join(__dirname, 'postman/documents.1.json')
+    iterationData: path.join(__dirname, 'postman/DCM_EXAMES_2020_bundles.v2.json')
+    ,iterationCount: 10
+    ,reporters: 'cli'
 };
 
 const parametersForTestRun2 = {
     collection: path.join(__dirname, 'postman/carga_docs.postman_collection.json'), // your collection
-    environment: path.join(__dirname, 'postman/local.postman_environment.json'), //your env
-    // environment: path.join(__dirname, 'postman/homologacao.postman_environment.json'), //your env
+    // environment: path.join(__dirname, 'postman/local.postman_environment.json'), //your env
+    environment: path.join(__dirname, 'postman/homologacao.postman_environment.json'), //your env
     iterationData: path.join(__dirname, 'postman/documents.2.json')
-    ,iterationCount: 1
+    ,iterationCount: 400
     // ,reporters: 'cli'
 };
 
 const parametersForTestRun3 = {
     collection: path.join(__dirname, 'postman/carga_docs.postman_collection.json'), // your collection
-    environment: path.join(__dirname, 'postman/local.postman_environment.json'), //your env
-    // environment: path.join(__dirname, 'postman/homologacao.postman_environment.json'), //your env
+    // environment: path.join(__dirname, 'postman/local.postman_environment.json'), //your env
+    environment: path.join(__dirname, 'postman/homologacao.postman_environment.json'), //your env
     iterationData: path.join(__dirname, 'postman/documents.3.json')
-    ,iterationCount: 1
+    ,iterationCount: 400
     // ,reporters: 'cli'
 };
 
 const parametersForTestRun4 = {
     collection: path.join(__dirname, 'postman/carga_docs.postman_collection.json'), // your collection
-    environment: path.join(__dirname, 'postman/local.postman_environment.json'), //your env
-    // environment: path.join(__dirname, 'postman/homologacao.postman_environment.json'), //your env
+    // environment: path.join(__dirname, 'postman/local.postman_environment.json'), //your env
+    environment: path.join(__dirname, 'postman/homologacao.postman_environment.json'), //your env
     iterationData: path.join(__dirname, 'postman/documents.4.json')
-    ,iterationCount: 1
+    ,iterationCount: 400
     // ,reporters: 'cli'
 };
 
 const parametersForTestRun5 = {
     collection: path.join(__dirname, 'postman/carga_docs.postman_collection.json'), // your collection
-    environment: path.join(__dirname, 'postman/local.postman_environment.json'), //your env
-    // environment: path.join(__dirname, 'postman/homologacao.postman_environment.json'), //your env
+    // environment: path.join(__dirname, 'postman/local.postman_environment.json'), //your env
+    environment: path.join(__dirname, 'postman/homologacao.postman_environment.json'), //your env
     iterationData: path.join(__dirname, 'postman/documents.5.json')
-    ,iterationCount: 1
+    ,iterationCount: 400
     // ,reporters: 'cli'
 };
 
