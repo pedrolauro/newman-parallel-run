@@ -3,3 +3,5 @@ postman/integ.postman_environment.json
 newman/
 
 executions/
+
+postman/env/prd/
