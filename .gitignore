@@ -5,3 +5,5 @@ newman/
 executions/
 
 postman/env/prd/
+
+postman/docs/s3/

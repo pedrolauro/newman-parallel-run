@@ -10,13 +10,14 @@ const NOW = moment().tz("America/Sao_Paulo").format('YYYY_MM_DD_HH_mm_ss')
 console.log(`\n\nRESULTADOS ESTARÃO EM executions/${NOW}`)
 
 // LISTA DE UFS
-// var UFS = ['AC','AL','AP','AM','BA','CE','DF','ES','GO','MA','MT','MS','MG','PA','PB','PR','PE','PI','RJ','RN','RS','RO','RR','SC','SP','SE','TO']
-const UFS = ['AC', 'AP']
+var UFS = ['AC','AL','AP','AM','BA','CE','DF','ES','GO','MA','MT','MS','MG','PA','PB','PR','PE','PI','RJ','RN','RS','RO','RR','SC','SP','SE','TO']
+// const UFS = ['AC', 'AP']
 
 const parameters = (uf) => ({
     collection: path.join(__dirname, 'postman/carga_docs.postman_collection.json'),
     environment: path.join(__dirname, `postman/env/prd/${uf}.json`),
-    iterationData: path.join(__dirname, `postman/docs/docs.${uf}.json`),
+    iterationData: path.join(__dirname, `postman/docs/s3/20200421/${uf}_01.json`),
+    iterationCount: 1,
     reporters: ['json'],
     reporter: {
         json: {
