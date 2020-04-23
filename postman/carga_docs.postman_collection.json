@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "7464f400-bd28-48b0-84ff-f492bea8938c",
+		"_postman_id": "a810168b-93e3-41a5-bfe4-136d97e119c5",
 		"name": "Carga documentos",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
@@ -17,14 +17,6 @@
 								"id": "370293bf-88d1-4e94-b92b-c78cc0e3907b",
 								"exec": [
 									"pm.test(\"Status code is 201\", function () { pm.response.to.have.status(201); });",
-									"",
-									"pm.test(\"Location is present\", function () {",
-									"    pm.response.to.have.header(\"Location\");",
-									"    ",
-									"    var location = pm.response.headers.get(\"Location\");",
-									"    var pieces = location.split('/');",
-									"    pm.environment.set(\"doc_id\", pieces[pieces.length-1]);",
-									"});",
 									""
 								],
 								"type": "text/javascript"
@@ -58,22 +50,10 @@
 								"value": "application/json"
 							},
 							{
-								"description": "No modo debug identifica a origem.",
-								"key": "X-Authorization-Origin",
-								"type": "text",
-								"value": "CNES"
-							},
-							{
 								"description": "Token do servidor gerado pelo \"ehr-mutual-ssl-auth\". Em modo debug espera um CNPJ ou CPF.",
 								"key": "X-Authorization-Server",
 								"type": "text",
 								"value": "00394544000185"
-							},
-							{
-								"description": "Em modo debug enviar um CNS.",
-								"key": "Authorization",
-								"type": "text",
-								"value": "709805016469793"
 							}
 						],
 						"body": {

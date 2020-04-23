@@ -11,6 +11,8 @@ let rawdata = fs.readFileSync(path.join(__dirname, input))
 let docs = JSON.parse(rawdata)
 console.log(`TOTAL DE DOCS: ${docs.length}`)
 
+// coloca doc dentro de tag, para processamento pelo 
+// newman, que espera essa prop 'document'
 docs = docs.map((i) => ({
     document: i
 }))

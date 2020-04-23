@@ -2,76 +2,40 @@ const path = require('path')
 const async = require('async')
 const newman = require('newman')
 
-const PARALLEL_RUN_COUNT = 1
+const PARALLEL_RUN_COUNT = 2
 
 const parametersForTestRun1 = {
     collection: path.join(__dirname, 'postman/carga_docs.postman_collection.json'), // your collection
-    environment: path.join(__dirname, 'postman/local.postman_environment.json'), //your env
-    // environment: path.join(__dirname, 'postman/homologacao.postman_environment.json'), //your env
-    // iterationData: path.join(__dirname, 'postman/documents.1.json')
-    iterationData: path.join(__dirname, 'postman/DCM_EXAMES_2020_bundles.v2.json')
-    ,iterationCount: 10
-    ,reporters: 'cli'
+    environment: path.join(__dirname, 'postman/prd.AL.postman_environment.json'), //your env
+    iterationData: path.join(__dirname, 'postman/docs.AL.json')
+    ,reporters: ['json']
+    ,reporter: { json: { export: path.join(__dirname, 'executions/output.AL.json') } }
+    ,id: 'AL'
 };
 
 const parametersForTestRun2 = {
     collection: path.join(__dirname, 'postman/carga_docs.postman_collection.json'), // your collection
-    // environment: path.join(__dirname, 'postman/local.postman_environment.json'), //your env
-    environment: path.join(__dirname, 'postman/homologacao.postman_environment.json'), //your env
-    iterationData: path.join(__dirname, 'postman/documents.2.json')
-    ,iterationCount: 400
-    // ,reporters: 'cli'
+    environment: path.join(__dirname, 'postman/prd.DF.postman_environment.json'), //your env
+    iterationData: path.join(__dirname, 'postman/docs.DF.json')
+    ,reporters: ['json']
+    ,reporter: { json: { export: path.join(__dirname, 'executions/output.DF.json') } }
+    ,id: 'DF'
 };
 
-const parametersForTestRun3 = {
-    collection: path.join(__dirname, 'postman/carga_docs.postman_collection.json'), // your collection
-    // environment: path.join(__dirname, 'postman/local.postman_environment.json'), //your env
-    environment: path.join(__dirname, 'postman/homologacao.postman_environment.json'), //your env
-    iterationData: path.join(__dirname, 'postman/documents.3.json')
-    ,iterationCount: 400
-    // ,reporters: 'cli'
-};
-
-const parametersForTestRun4 = {
-    collection: path.join(__dirname, 'postman/carga_docs.postman_collection.json'), // your collection
-    // environment: path.join(__dirname, 'postman/local.postman_environment.json'), //your env
-    environment: path.join(__dirname, 'postman/homologacao.postman_environment.json'), //your env
-    iterationData: path.join(__dirname, 'postman/documents.4.json')
-    ,iterationCount: 400
-    // ,reporters: 'cli'
-};
-
-const parametersForTestRun5 = {
-    collection: path.join(__dirname, 'postman/carga_docs.postman_collection.json'), // your collection
-    // environment: path.join(__dirname, 'postman/local.postman_environment.json'), //your env
-    environment: path.join(__dirname, 'postman/homologacao.postman_environment.json'), //your env
-    iterationData: path.join(__dirname, 'postman/documents.5.json')
-    ,iterationCount: 400
-    // ,reporters: 'cli'
-};
-
-parallelCollectionRun = function (done, i) {
-
+parallelCollectionRun = (i) => (done) => {
+    
     let param = parametersForTestRun1
-    if (i == 2) {
+    if (i === 1) {
         param = parametersForTestRun2
     }
-    if (i == 3) {
-        param = parametersForTestRun3
-    }
-    if (i == 4) {
-        param = parametersForTestRun4
-    }
-    if (i == 5) {
-        param = parametersForTestRun5
-    }
-
+    
+    console.log(`params, i=${i}, param.id=${param.id}`)
     newman.run(param, done);
 };
 
 let commands = []
 for (let index = 0; index < PARALLEL_RUN_COUNT; index++) {
-    commands.push(parallelCollectionRun);
+    commands.push(parallelCollectionRun(index));
 }
 
 // Runs the Postman sample collection thrice, in parallel.
