@@ -14,6 +14,7 @@ const fs = require('fs')
 const NOW = moment().tz('America/Sao_Paulo').format('YYYY_MM_DD_HH_mm_ss')
 const UFS = ['AC', 'AL', 'AP', 'AM', 'BA', 'CE', 'DF', 'ES', 'GO', 'MA', 'MT', 'MS', 'MG', 'PA', 'PB', 'PR', 'PE', 'PI', 'RJ', 'RN', 'RS', 'RO', 'RR', 'SC', 'SP', 'SE', 'TO']
 const S3_FOLDER = 's3/20200421'
+// const S3_FOLDER = 'teste'
 const DOC_FOLDER = `./postman/docs/${S3_FOLDER}`
 const OUTPUT_FOLDER = `executions/${NOW}`
 const FILE_PATTERN = /([A-Z]{2})_01\.json/
@@ -50,36 +51,35 @@ setTimeout(run, 100)
 function run() {
 
     console.log(chalk.magenta(`\n\n${BARS}`))
-    console.log(chalk.cyan(`INICIO DA EXECUCAO`))
-    console.log(chalk.cyan(`DOCUMENTOS DA PASTA `) + chalk.yellow(S3_FOLDER))
-    console.log(chalk.cyan(`RESULTADOS EM `) + chalk.yellow(OUTPUT_FOLDER))
+    console.log(chalk.magenta(`INICIO DA EXECUCAO`))
+    console.log(chalk.magenta(`DOCUMENTOS DA PASTA `) + chalk.yellow(S3_FOLDER))
+    console.log(chalk.magenta(`RESULTADOS EM `) + chalk.yellow(OUTPUT_FOLDER))
     console.log(chalk.magenta(`${BARS}\n\n`))
 
-    let commands = []
     let falha = false
-    fs.readdir(DOC_FOLDER, (err, files) => {
-        files.forEach(file => {
-
-            if (falha) {
-                return
-            }
-
-            if (!file.match(FILE_PATTERN)) {
-                console.log(chalk.redBright(`ARQUIVO INVALIDO: `) +
-                    chalk.bold.redBright(`${DOC_FOLDER}/${file}\n\n`))
-                falha = true
-                return
-            }
-
-            let uf = file.replace(FILE_PATTERN, '$1')
-            // console.log(`uf=${uf}, path=${file}`)
-            commands.push(createNewRunCmd(uf, `${DOC_FOLDER}/${file}`))
-        })
+    var commands = []
+    var files = fs.readdirSync(DOC_FOLDER)
+    files.forEach(file => {
 
         if (falha) {
             return
         }
+
+        if (!file.match(FILE_PATTERN)) {
+            console.log(chalk.redBright(`ARQUIVO INVALIDO: `) +
+                chalk.bold.redBright(`${DOC_FOLDER}/${file}\n\n`))
+            falha = true
+            return
+        }
+
+        let uf = file.replace(FILE_PATTERN, '$1')
+        let dataPath = `${DOC_FOLDER}/${file}`
+        commands.push(createNewRunCmd(uf, dataPath))
     })
+
+    if (falha) {
+        return
+    }
 
     // Runs the Postman sample collection thrice, in parallel.
     async.parallel(
@@ -102,10 +102,13 @@ function run() {
             })
 
             let falhasGeralTxt = `${failuresGeral} (${100*failuresGeral/totalGeral}%)`
-            console.log(`\nGERAL: total=${totalGeral}, falhas=${falhasGeralTxt}`)
-            console.log(`\n\n${BARS}`)
-            console.log(`TERMINO DA EXECUCAO`)
-            console.log(`${BARS}\n\n`)
+            
+            console.log(chalk.magenta(`\n\n${BARS}`))
+            console.log(chalk.magenta(`TERMINO DA EXECUCAO`))
+            console.log(chalk.yellow(`execucoes=${results.length}`))
+            console.log(chalk.yellow(`total=${totalGeral}`))
+            console.log(chalk.redBright(`falhas=${falhasGeralTxt}`))
+            console.log(chalk.magenta(`${BARS}\n\n`))
         }
     )
 }
