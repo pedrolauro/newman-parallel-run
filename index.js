@@ -11,14 +11,16 @@ const fs = require('fs')
 /**
  * VARS
  */
+const BARS = `######################################################`
 const NOW = moment().tz('America/Sao_Paulo').format('YYYY_MM_DD_HH_mm_ss')
-const UFS = ['AC', 'AL', 'AP', 'AM', 'BA', 'CE', 'DF', 'ES', 'GO', 'MA', 'MT', 'MS', 'MG', 'PA', 'PB', 'PR', 'PE', 'PI', 'RJ', 'RN', 'RS', 'RO', 'RR', 'SC', 'SP', 'SE', 'TO']
-const S3_FOLDER = 's3/20200421'
+const S3_FOLDER = 'prep/s3/20200421'
 // const S3_FOLDER = 'teste'
 const DOC_FOLDER = `./postman/docs/${S3_FOLDER}`
 const OUTPUT_FOLDER = `executions/${NOW}`
 const FILE_PATTERN = /([A-Z]{2})_01\.json/
-const BARS = `######################################################`
+const ENV = 'hmg'
+const ITERATION_LIMIT = 1
+
 
 /**
  * FUNCS
@@ -33,9 +35,9 @@ const createNewRunCmd = (uf, dataPath) => (done) => {
 const runParamByUf = (uf, dataPath) => ({
     id: uf,
     collection: joinPath('postman/carga_docs.postman_collection.json'),
-    environment: joinPath(`postman/env/prd/${uf}.json`),
+    environment: joinPath(`postman/env/${ENV}/${uf}.json`),
     iterationData: joinPath(dataPath),
-    iterationCount: 1,
+    iterationCount: ITERATION_LIMIT,
     reporters: ['json'],
     reporter: {
         json: {
@@ -52,6 +54,8 @@ function run() {
 
     console.log(chalk.magenta(`\n\n${BARS}`))
     console.log(chalk.magenta(`INICIO DA EXECUCAO`))
+    console.log(chalk.magenta(`ENV `) + chalk.yellow(ENV))
+    console.log(chalk.magenta(`ITERATION_LIMIT `) + chalk.yellow(ITERATION_LIMIT))
     console.log(chalk.magenta(`DOCUMENTOS DA PASTA `) + chalk.yellow(S3_FOLDER))
     console.log(chalk.magenta(`RESULTADOS EM `) + chalk.yellow(OUTPUT_FOLDER))
     console.log(chalk.magenta(`${BARS}\n\n`))

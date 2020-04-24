@@ -6,4 +6,10 @@ executions/
 
 postman/env/prd/
 
+postman/env/hmg/
+
+postman/env/local/
+
 postman/docs/s3/
+
+postman/docs/prep/
