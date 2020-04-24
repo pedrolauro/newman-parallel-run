@@ -1,32 +1,33 @@
-# Running multiple Postman Collection in parallel
+# runner-carga-ehr
 
-A known limitation of the Postman Collection Runner is that it can only execute collection in a consecutive way. 
-This is just a simple implementation of the solution explained in this [StackOverflow conversation](https://stackoverflow.com/a/41181892/2042761). 
+## Script para criar envs
 
-## Create your Postman Collection and corresponding tests
+Altere os parâmetros internamente para apontar para `prd`, `hmg` ou `local`, ajustando qual o host para cada caso.
 
-Here I needed to attack first `/api/persons` to get the list of persons ids. 
+```bash
+node createEnvs.js
+```
 
-![Test of /api/persons](docs/api-persons-test.png)
+## Script para preparar o json para execucao
 
-And then `/api/persons/:id` for each person in the list. 
+Altere os parâmetros internamente para apontar para a pasta correta. A saída será gravada em pasta `prep` com nome análogo à entrada.
 
-![Test of /api/persons/:id](docs/api-persons-id-test.png)
+```bash
+node formatJsonDocs.js
+```
 
-To do that I used the `postman.setNextRequest()` tricks that specify the next request that will be executed in the collection run. And in each run I get the last personId and pop() it from the array in environment variables. 
+## Script para executar os testes
 
-## Export your collection and the environment variables
+Altere os parâmetros internamente para apontar para a pasta de docs correta, para qual ambiente os testes serão enviados, qual o limite de documentos por UF.
 
-![Export collection](docs/export-collection.png)
+```bash
+node index.js
+```
 
-And save the files in a `postman/` directory. 
+## Script sumarizar os resultados
 
-## Create the new npm project
+Altere os parâmetros internamente para apontar para a pasta de resultados correta. A saída será salva na mesma pasta da entrada, em um json de nome `summary.json`.
 
-Simply run `npm init -y` and install the 3 dependencies: `npm i async newman path`
-
-## The script !
-
-It's kind of self explanatory, update the path for your postman collection and environment, specify the number of concurrent run you want to launch with the constant `PARALLEL_RUN_COUNT` and execute the script with `npm start` 
-
-![running results](docs/run-result.png)
+```bash
+node summaryResult.js
+```

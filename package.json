@@ -1,5 +1,5 @@
 {
-  "name": "newman_parallel",
+  "name": "runner-carga-ehr",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
